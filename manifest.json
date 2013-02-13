@@ -1,6 +1,7 @@
 {
     "name": "tumblr-tile",
     "version": "0.1",
+    "icons": {"128": "images/headshot.png"},
     "description": "tumblr-tile",
     "chrome_url_overrides": {
         "newtab": "newTab.html"
