@@ -20,6 +20,7 @@ tumblrTile || (function() {
         var config    = configStr ? JSON.parse(configStr) : {};
 
         var defaultConfig = {
+            apiKey   : "z8qKzrI6XqZtHb7QAYtoixJNl8wxWSQAZDA8pQ9mUmYYoyljoD",
             hostname : "moga-mogami.tumblr.com",
             baseWidth: 250,
             margin   : 10
