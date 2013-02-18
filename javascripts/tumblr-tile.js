@@ -46,15 +46,24 @@ tumblrTile || (function() {
 
         var isAccessTumblr = false;
 
+        var items = [];
+        var i = 0;
+
         self.getTumblrPhotos(param, function(div) {
-            $("#container").append($(div));
+            items[i] = div;
+            i++;
         }).then(function() {
 
             param.offset += param.limit;
 
+            items = shuffle(items);
+            for (i = 0; i <= items.length; i++) {
+                $("#container").append($(items[i]));
+            }
+
             $("#container").masonry({
                 itemSelector: ".item",
-                columnWidth: self.config.baseWidth + self.config.margin,
+                columnWidth: self.config.baseWidth + self.config.margin + 2,
                 isFitWidth: true,
                 isAnimated: true
             });
@@ -127,4 +136,8 @@ tumblrTile || (function() {
         return d;
     }
 
+    var shuffle = function(a) {
+        for(var j, x, i = a.length; i; j = parseInt(Math.random() * i), x = a[--i], a[i] = a[j], a[j] = x);
+            return a;
+        };
 })();
