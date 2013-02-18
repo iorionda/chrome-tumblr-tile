@@ -1,9 +1,9 @@
 var tumblrTile;
 
-tumblrTile || (function() {
+tumblrTile || (function () {
 
     tumblrTile = {
-        configNs       : "tumblr-tile",
+        configNs       : 'tumblr-tile',
         saveConfig     : saveConfig,
         loadConfig     : loadConfig,
         draw           : draw,
@@ -20,8 +20,8 @@ tumblrTile || (function() {
         var config    = configStr ? JSON.parse(configStr) : {};
 
         var defaultConfig = {
-            apiKey   : "z8qKzrI6XqZtHb7QAYtoixJNl8wxWSQAZDA8pQ9mUmYYoyljoD",
-            hostname : "moga-mogami.tumblr.com",
+            apiKey   : 'z8qKzrI6XqZtHb7QAYtoixJNl8wxWSQAZDA8pQ9mUmYYoyljoD',
+            hostname : 'moga-mogami.tumblr.com',
             baseWidth: 250,
             margin   : 10
         };
@@ -34,8 +34,8 @@ tumblrTile || (function() {
 
         self.loadConfig();
 
-        if ( ! self.config.apiKey ) {
-            console.log("not exists api key");
+        if (!self.config.apiKey) {
+            console.log('not exists api key');
             return 1;
         }
 
@@ -49,40 +49,40 @@ tumblrTile || (function() {
         var items = [];
         var i = 0;
 
-        self.getTumblrPhotos(param, function(div) {
+        self.getTumblrPhotos(param, function (div) {
             items[i] = div;
             i++;
-        }).then(function() {
+        }).then(function () {
 
             param.offset += param.limit;
 
             items = shuffle(items);
             for (i = 0; i <= items.length; i++) {
-                $("#container").append($(items[i]));
+                $('#container').append($(items[i]));
             }
 
-            $("#container").masonry({
-                itemSelector: ".item",
-                columnWidth: self.config.baseWidth + self.config.margin + 2,
+            $('#container').masonry({
+                itemSelector: '.item',
+                columnWidth: self.config.baseWidth + self.config.margin,
                 isFitWidth: true,
                 isAnimated: true
             });
-        }).then(function() {
-            $(window).scroll(function() {
-                if ( isAccessTumblr == false && $(window).scrollTop() + $(window).height() >= $(document).height() ) {
+        }).then(function () {
+            $(window).scroll(function () {
+                if (isAccessTumblr === false && $(window).scrollTop() + $(window).height() >= $(document).height()) {
 
                     isAccessTumblr = true;
-                    var divs = "";
+                    var divs = '';
 
-                    self.getTumblrPhotos(param, function(div) {
+                    self.getTumblrPhotos(param, function (div) {
                         divs += div;
-                    }).then(function() {
+                    }).then(function () {
 
                         param.offset += param.limit;
 
                         var $divs = $(divs);
-                        $("#container").append($divs).masonry( 'appended', $divs, false );
-                    }).then(function() {
+                        $('#container').append($divs).masonry('appended', $divs, false);
+                    }).then(function () {
                         isAccessTumblr = false;
                     });
                 }
@@ -98,34 +98,34 @@ tumblrTile || (function() {
         param.api_key = self.config.apiKey;
 
         $.getJSON(
-            "https://api.tumblr.com/v2/blog/" + self.config.hostname + "/posts/photo",
+            'https://api.tumblr.com/v2/blog/' + self.config.hostname + '/posts/photo',
             param,
-            function(json) {
+            function (json) {
 
-                json.response.posts.forEach(function(val, index, array) {
-                    if ( ! val.photos ) {
+                json.response.posts.forEach(function (val, index, array) {
+                    if (!val.photos) {
                         return 1;
                     }
                     var j    = 0;
-                    var diffSizes = val.photos[0].alt_sizes.map(function(alt_size) {
+                    var diffSizes = val.photos[0].alt_sizes.map(function (alt_size) {
                         return {
                             diffWidth: Math.abs(alt_size.width - self.config.baseWidth),
                             index    : j++,
                         };
-                    })
+                    });
 
-                    diffSizes.sort(function(a, b) {
-                        if ( a.diffWidth > b.diffWidth ) {
+                    diffSizes.sort(function (a, b) {
+                        if (a.diffWidth > b.diffWidth) {
                             return 1;
                         }
-                        else if ( a.diffWidth < b.diffWidth ) {
+                        else if (a.diffWidth < b.diffWidth) {
                             return -1;
                         }
                         return 0;
                     });
 
-                    var altSize = val.photos[0].alt_sizes[diffSizes[0].index]
-                    var div = '<div class="item"><a href="' + val.post_url + '"><img src="' + altSize.url+ '" width="' + altSize.width + '" height="' + altSize.height + '" /></a></div>';
+                    var altSize = val.photos[0].alt_sizes[diffSizes[0].index];
+                    var div = '<div class="item"><a href="' + val.post_url + '"><img src="' + altSize.url + '" width="' + altSize.width + '" height="' + altSize.height + '" /></a></div>';
                     func(div);
                 });
 
@@ -136,8 +136,8 @@ tumblrTile || (function() {
         return d;
     }
 
-    var shuffle = function(a) {
-        for(var j, x, i = a.length; i; j = parseInt(Math.random() * i), x = a[--i], a[i] = a[j], a[j] = x);
-            return a;
+    var shuffle = function (a) {
+        for (var j, x, i = a.length; i; j = parseInt(Math.random() * i), x = a[--i], a[i] = a[j], a[j] = x) ;
+        return a;
         };
 })();
