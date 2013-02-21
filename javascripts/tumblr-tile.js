@@ -92,7 +92,6 @@ tumblrTile || (function () {
     }
 
     function getTumblrPhotos(param, func) {
-
         var self = this;
         var d = $.Deferred();
         param.api_key = self.config.apiKey;
@@ -136,8 +135,17 @@ tumblrTile || (function () {
         return d;
     }
 
-    var shuffle = function (a) {
-        for (var j, x, i = a.length; i; j = parseInt(Math.random() * i), x = a[--i], a[i] = a[j], a[j] = x) ;
-        return a;
-        };
+    var shuffle = function (items) {
+        var len = items.length;
+        var array = items.concat();
+        var temp = [];
+        var res = [];
+
+
+        while(len) {
+            temp.push(array.splice(Math.floor(Math.random() * len--), 1));
+        }
+        res[0] = temp.join()
+        return res;
+    };
 })();
